@@ -1,0 +1,28 @@
+{
+  "name": "getir-test",
+  "version": "1.0.0",
+  "description": "getir backend end",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Paker30/getir-test.git"
+  },
+  "keywords": [
+    "getir",
+    "backend"
+  ],
+  "author": "Francisco Moreno",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Paker30/getir-test/issues"
+  },
+  "homepage": "https://github.com/Paker30/getir-test#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongodb": "^4.4.1"
+  }
+}
