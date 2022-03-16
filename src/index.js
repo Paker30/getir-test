@@ -2,7 +2,8 @@ import express from 'express'
 import { MongoClient } from 'mongodb';
 import { createValidator } from 'express-joi-validation';
 import { PORT, MONGO_URI } from './config/index.js';
-import { body } from './schemas.js'
+import { body } from './schemas.js';
+import { getRecords } from './api/records.js'
 
 const app = express();
 app.use(express.json());
@@ -15,33 +16,7 @@ client.connect()
         console.log('Connected to mongo server');
         const db = client.db();
 
-        app.post('/records', validator.body(body), (req, res) => {
-            const { startDate, endDate, minCount, maxCount } = req.body;
-            db.collection('records').find({
-                createdAt: { $gt: new Date(startDate), $lt: new Date(endDate) }
-            })
-            .project({
-                key: 1,
-                createdAt: 1,
-                totalCount: { $sum: "$counts"}
-            })
-            .toArray()
-                .then((data) => {
-                    res.send({
-                        code: 0,
-                        msg: 'Success',
-                        records: data.filter(({ totalCount}) => minCount <= totalCount && totalCount <= maxCount)
-                    });
-                })
-                .catch((error) => {
-                    console.error(error.message);
-                    res.send({
-                        code: 1,
-                        msg: error.message,
-                        records: []
-                    });
-                })
-        });
+        app.post('/records', validator.body(body), getRecords(db));
 
         app.listen(port, () => {
             console.log(`Example app listening on port ${port}`)
