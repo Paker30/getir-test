@@ -26,25 +26,49 @@ describe('records endpoints', () => {
         mockProject.mockReturnValue({ toArray: mockToArray});
     });
 
-    it('error at fetching the records', async () => {
-        mockToArray.mockRejectedValue(new Error('Something went wrong'));
+    describe('errors', () => {
+    
+        it('wrong date format', async () => {
+            const req = {
+                    body: {
+                    'startDate': '01-26-2016',
+                    'endDate': '2018-02-02',
+                    'minCount': 2700,
+                    'maxCount': 3000
+                }
+            };
+            
+            getRecords(mockDb)(req,res);
+            await waitForExpect(() => {
+                expect(res.send).toHaveBeenCalled();
+                expect(res.send).toHaveBeenCalledWith({
+                    code: 4,
+                    msg: '"startDate" must be in YYYY-MM-DD format',
+                    records: []
+                });
+            });
+        });
 
-        const req = {
-                body: {
-                'startDate': '2016-01-26',
-                'endDate': '2018-02-02',
-                'minCount': 2700,
-                'maxCount': 3000
-            }
-        };
-        
-        getRecords(mockDb)(req,res);
-        await waitForExpect(() => {
-            expect(res.send).toHaveBeenCalled();
-            expect(res.send).toHaveBeenCalledWith({
-                code: 1,
-                msg: 'Something went wrong',
-                records: []
+        it('error at fetching the records', async () => {
+            mockToArray.mockRejectedValue(new Error('Something went wrong'));
+    
+            const req = {
+                    body: {
+                    'startDate': '2016-01-26',
+                    'endDate': '2018-02-02',
+                    'minCount': 2700,
+                    'maxCount': 3000
+                }
+            };
+            
+            getRecords(mockDb)(req,res);
+            await waitForExpect(() => {
+                expect(res.send).toHaveBeenCalled();
+                expect(res.send).toHaveBeenCalledWith({
+                    code: 1,
+                    msg: 'Something went wrong',
+                    records: []
+                });
             });
         });
     });

@@ -1,4 +1,14 @@
+import { body } from '../schemas.js';
+
 const getRecords = (db) => (req, res) => {
+    const { error } = body.validate(req.body);
+    if (error) {
+        return res.send({
+            code: 4,
+            msg: error.message,
+            records: []
+        });
+    }
     const { startDate, endDate, minCount, maxCount } = req.body;
     db.collection('records').find({
         createdAt: { $gt: new Date(startDate), $lt: new Date(endDate) }
