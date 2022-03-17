@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
+    "build": "docker build . -t paco28/getir-backend:${npm_package_version} -t paco28/getir-backend:latest",
     "start": "node src/index.js",
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
@@ -31,7 +32,6 @@
     "mongodb": "^4.4.1"
   },
   "devDependencies": {
-    "supertest": "^6.2.2",
     "wait-for-expect": "^3.0.2"
   },
   "jest": {
