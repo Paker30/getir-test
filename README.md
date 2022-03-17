@@ -6,6 +6,10 @@ This is an API which solves getir's backend test.
 
 The api has been deployed at heroku under this url ```https://serene-reaches-37796.herokuapp.com```
 
+In order to make sure the API is listening hit this endpoint to get the version
+
+```https://serene-reaches-37796.herokuapp.com/version```
+
 ### Example of request
 
 In order to request records you must make a POST request to this url
@@ -31,6 +35,7 @@ In order to install the project run this command
 
 ```bash
 npm i
+npm start
 ```
 
 The API would be listing under port 3000 in your localmachine
